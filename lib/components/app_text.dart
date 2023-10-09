@@ -11,6 +11,7 @@ class AppText extends StatelessWidget {
   TextAlign? textAlign;
   FontStyle? fontStyle;
   TextDecoration? textDecoration;
+  Color? decorationColor;
 
   AppText(
       {super.key,
@@ -22,6 +23,7 @@ class AppText extends StatelessWidget {
       this.maxLines,
       this.textAlign,
       this.fontStyle,
+      this.decorationColor,
       this.textDecoration});
 
   @override
@@ -33,7 +35,8 @@ class AppText extends StatelessWidget {
             fontWeight: fontWeight ?? FontWeight.w500,
             fontFamily: fontFamily,
             fontStyle: fontStyle,
-            decoration: textDecoration),
+            decoration: textDecoration,
+            decorationColor: decorationColor),
         maxLines: maxLines,
         textAlign: textAlign);
   }

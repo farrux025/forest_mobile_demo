@@ -19,11 +19,12 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       builder: (context, child) => MaterialApp(
         title: 'Forest Mobile',
+        debugShowCheckedModeBanner: false,
         navigatorKey: MyApp.navigatorKey,
         theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
             useMaterial3: true),
-        home: const AppScaffold(),
+        home: AppScaffold(),
       ),
     );
   }
