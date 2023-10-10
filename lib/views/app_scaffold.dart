@@ -25,7 +25,7 @@ class _AppScaffoldState extends State<AppScaffold> {
   int currentIndex = 0;
   List<IconData> iconList = [
     Icons.home,
-    Icons.message,
+    Icons.edit_document,
     Icons.favorite,
     Icons.more_horiz,
   ];
@@ -63,7 +63,6 @@ class _AppScaffoldState extends State<AppScaffold> {
         inactiveColor: AppColor.textColorSecondary,
         iconSize: 22.sp,
         gapWidth: 80.w,
-        borderColor: AppColor.mainColor,
         gapLocation: GapLocation.center,
         notchSmoothness: NotchSmoothness.softEdge,
         leftCornerRadius: 16.r,

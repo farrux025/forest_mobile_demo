@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forest_mobile/constants/colors.dart';
-import 'package:forest_mobile/models/news/news.dart';
-import 'package:forest_mobile/views/home/news_item.dart';
+import 'package:forest_mobile/constants/images.dart';
+import 'package:forest_mobile/main.dart';
+import 'package:forest_mobile/views/home/forest_item.dart';
+import 'package:forest_mobile/views/notification/notifications_screen.dart';
+
+import '../../models/forest/forest_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,76 +16,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<NewsModel> forestList = [
-    NewsModel(
-      title: "Bla bla Bla bla Bla bla Bla bla Bla bla",
-      date: "23.10.2023",
-      isRead: true,
-      image: 'assets/images/forest1.png',
-      description:
-          "sdfs fdsfs fsdgfsdgs gsdg sfgs gsg sdgsasfvsdklbz vdfbdfgdobln dfiobndf",
-    ),
-    NewsModel(
-      title: "Bla bla Bla bla Bla bla Bla bla Bla bla",
-      date: "23.10.2023",
-      isRead: true,
-      image: 'assets/images/forest2.png',
-      description:
-          "sdfs fdsfs fsdgfsdgs gsdg sfgs gsg sdgsasfvsdklbz vdfbdfgdobln dfiobndf",
-    ),
-    NewsModel(
-      title: "Bla bla Bla bla Bla bla Bla bla Bla bla",
-      date: "23.10.2023",
-      isRead: true,
-      description:
-          "sdfs fdsfs fsdgfsdgs gsdg sfgs gsg sdgsasfvsdklbz vdfbdfgdobln dfiobndf",
-    ),
-    NewsModel(
-      title: "Bla bla Bla bla Bla bla Bla bla Bla bla",
-      date: "23.10.2023",
-      isRead: true,
-      description:
-          "sdfs fdsfs fsdgfsdgs gsdg sfgs gsg sdgsasfvsdklbz vdfbdfgdobln dfiobndf",
-    ),
-    NewsModel(
-      title: "Bla bla Bla bla Bla bla Bla bla Bla bla",
-      date: "23.10.2023",
-      isRead: true,
-      image: 'assets/images/forest2.png',
-      description:
-          "sdfs fdsfs fsdgfsdgs gsdg sfgs gsg sdgsasfvsdklbz vdfbdfgdobln dfiobndf",
-    ),
-    NewsModel(
-      title: "Bla bla Bla bla Bla bla Bla bla Bla bla",
-      date: "23.10.2023",
-      image: 'assets/images/forest3.png',
-      isRead: true,
-      description:
-          "sdfs fdsfs fsdgfsdgs gsdg sfgs gsg sdgsasfvsdklbz vdfbdfgdobln dfiobndf",
-    ),
-    NewsModel(
-      title: "Bla bla Bla bla Bla bla Bla bla Bla bla",
-      date: "23.10.2023",
-      isRead: true,
-      image: 'assets/images/forest1.png',
-      description:
-          "sdfs fdsfs fsdgfsdgs gsdg sfgs gsg sdgsasfvsdklbz vdfbdfgdobln dfiobndf",
-    ),
-    NewsModel(
-      title: "Bla bla Bla bla Bla bla Bla bla Bla bla",
-      date: "23.10.2023",
-      isRead: true,
-      image: 'assets/images/forest3.png',
-      description:
-          "sdfs fdsfs fsdgfsdgs gsdg sfgs gsg sdgsasfvsdklbz vdfbdfgdobln dfiobndf",
-    ),
-    NewsModel(
-      title: "Bla bla Bla bla Bla bla Bla bla Bla bla",
-      date: "23.10.2023",
-      isRead: true,
-      description:
-          "sdfs fdsfs fsdgfsdgs gsdg sfgs gsg sdgsasfvsdklbz vdfbdfgdobln dfiobndf",
-    ),
+  List<ForestDetailsModel> forestList = [
+    ForestDetailsModel(
+        name: "Zomin Qo'riqxonasi",
+        address: "Zomin, Jizzax",
+        imageList: [AppImages.forest1, AppImages.forest2]),
+    ForestDetailsModel(name: "Zomin Qo'riqxonasi", address: "Zomin, Jizzax"),
+    ForestDetailsModel(
+        name: "Zomin Qo'riqxonasi",
+        address: "Zomin, Jizzax",
+        imageList: [AppImages.forest3, AppImages.forest2]),
+    ForestDetailsModel(
+        name: "Zomin Qo'riqxonasi",
+        address: "Zomin, Jizzax",
+        imageList: [AppImages.forest2]),
+    ForestDetailsModel(
+        name: "Zomin Qo'riqxonasi",
+        address: "Zomin, Jizzax",
+        imageList: [AppImages.forest1, AppImages.forest2, AppImages.forest3]),
+    ForestDetailsModel(name: "Zomin Qo'riqxonasi", address: "Zomin, Jizzax"),
   ];
 
   @override
@@ -89,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: AppColor.backgroundColorDarker,
       appBar: AppBar(
-        centerTitle: true,
+        elevation: 1,
         surfaceTintColor: AppColor.backgroundColorDarker,
         backgroundColor: AppColor.backgroundColorDarker,
         title: ColorFiltered(
@@ -102,27 +55,35 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         actions: [
+          IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.search,
+                color: AppColor.textColor,
+                size: 22.sp,
+              )),
           Padding(
             padding: EdgeInsets.only(right: 4.w),
             child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  MyApp.navigatorKey.currentState?.push(MaterialPageRoute(
+                      builder: (context) => const NotificationsScreen()));
+                },
                 icon: Icon(
-                  Icons.search,
+                  Icons.notifications_none,
                   color: AppColor.textColor,
                   size: 22.sp,
                 )),
-          )
+          ),
         ],
       ),
       body: SafeArea(
         child: ListView.separated(
-            itemBuilder: (context, index) {
-              return Padding(
-                padding:
-                    EdgeInsets.only(top: index == 0 ? 12.h : 0, bottom: 10.h),
-                child: NewsItem(newsModel: forestList[index]),
-              );
-            },
+            itemBuilder: (context, index) => Padding(
+                  padding:
+                      EdgeInsets.only(top: index == 0 ? 8.h : 0, bottom: 10.h),
+                  child: ForestItem(forestDetails: forestList[index]),
+                ),
             separatorBuilder: (context, index) => const SizedBox(),
             itemCount: forestList.length),
       ),

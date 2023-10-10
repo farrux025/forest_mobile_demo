@@ -9,8 +9,10 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.backgroundColorDarker,
       appBar: AppBar(
         surfaceTintColor: AppColor.backgroundColorDarker,
+        backgroundColor: AppColor.backgroundColorDarker,
         title: AppText(
             text: "Settings",
             size: 16.sp,
@@ -18,7 +20,12 @@ class ProfileScreen extends StatelessWidget {
             fontWeight: FontWeight.w500),
       ),
       body: Column(
-        children: [settingsItem(title: 'change language', onPressed: () {})],
+        children: [
+          settingsItem(
+              title: 'Change language',
+              onPressed: () {},
+              leading: Icons.language)
+        ],
       ),
     );
   }
@@ -26,21 +33,43 @@ class ProfileScreen extends StatelessWidget {
   Widget settingsItem(
       {required String title,
       IconData? leading,
-      IconData? trailing,
+      Widget? trailing,
       required VoidCallback onPressed}) {
-    return MaterialButton(
-      onPressed: onPressed,
-      child: Container(
-          child: Row(
-        children: [
-          leading == null
-              ? const SizedBox()
-              : CircleAvatar(
-                  backgroundColor: AppColor.backgroundColorDarker,
-                  child: Icon(leading, color: AppColor.mainColor, size: 20.sp),
-                )
-        ],
-      )),
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 14.w),
+      width: ScreenUtil().screenWidth,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12.sp),
+          color: AppColor.white),
+      child: MaterialButton(
+        onPressed: onPressed,
+        child: Row(
+          children: [
+            leading == null
+                ? const SizedBox()
+                : Flexible(
+                    flex: 1,
+                    child: CircleAvatar(
+                      backgroundColor: AppColor.backgroundColorDarker,
+                      child: Icon(leading,
+                          color: AppColor.mainColor, size: 20.sp),
+                    ),
+                  ),
+            Flexible(
+                flex: 4,
+                child: AppText(
+                    text: title,
+                    size: 14.sp,
+                    color: AppColor.textColor,
+                    fontWeight: FontWeight.w500)),
+            Flexible(
+                flex: 1,
+                child: trailing ??
+                    Icon(Icons.chevron_right,
+                        color: AppColor.textColor, size: 20.sp))
+          ],
+        ),
+      ),
     );
   }
 }
