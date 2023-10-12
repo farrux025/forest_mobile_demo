@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forest_mobile/components/app_text.dart';
 import 'package:forest_mobile/constants/colors.dart';
+import 'package:forest_mobile/main.dart';
+import 'package:forest_mobile/views/auth/user_exist_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -24,7 +26,15 @@ class ProfileScreen extends StatelessWidget {
           settingsItem(
               title: 'Change language',
               onPressed: () {},
-              leading: Icons.language)
+              leading: Icons.language),
+          settingsItem(
+              title: 'Sign in',
+              onPressed: () {
+                MyApp.navigatorKey.currentState?.push(MaterialPageRoute(
+                  builder: (context) => const UserExistScreen(),
+                ));
+              },
+              leading: Icons.login),
         ],
       ),
     );
@@ -39,8 +49,7 @@ class ProfileScreen extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 14.w),
       width: ScreenUtil().screenWidth,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.sp),
-          color: AppColor.white),
+          borderRadius: BorderRadius.circular(12.sp), color: AppColor.white),
       child: MaterialButton(
         onPressed: onPressed,
         child: Row(
@@ -51,8 +60,8 @@ class ProfileScreen extends StatelessWidget {
                     flex: 1,
                     child: CircleAvatar(
                       backgroundColor: AppColor.backgroundColorDarker,
-                      child: Icon(leading,
-                          color: AppColor.mainColor, size: 20.sp),
+                      child:
+                          Icon(leading, color: AppColor.mainColor, size: 20.sp),
                     ),
                   ),
             Flexible(

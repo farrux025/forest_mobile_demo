@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../constants/colors.dart';
 
 class AppTextFormField extends StatelessWidget {
-  String labelText;
+  String? labelText;
   FormFieldValidator<String>? validator;
   TextEditingController? textEditingController;
   Icon? prefixIcon;
@@ -17,9 +17,13 @@ class AppTextFormField extends StatelessWidget {
   int? maxLength;
   TextInputType? keyboardType;
   ValueChanged<String>? onChanged;
+  bool? autofocus;
+  InputBorder? border;
+  InputBorder? enableBorder;
+  EdgeInsetsGeometry? contentPadding;
 
   AppTextFormField(
-      {required this.labelText,
+      {this.labelText,
       this.validator,
       this.textEditingController,
       this.prefixIcon,
@@ -31,6 +35,10 @@ class AppTextFormField extends StatelessWidget {
       this.maxLength,
       this.keyboardType,
       this.onChanged,
+      this.autofocus,
+      this.border,
+      this.enableBorder,
+      this.contentPadding,
       Key? key})
       : super(key: key);
 
@@ -41,25 +49,23 @@ class AppTextFormField extends StatelessWidget {
       controller: textEditingController,
       maxLines: maxLines,
       maxLength: maxLength,
-      style: TextStyle(fontSize: 16.sp),
+      style: TextStyle(fontSize: 14.sp,color: AppColor.textColor,fontWeight: FontWeight.w500),
       inputFormatters: inputFormatter,
       keyboardType: keyboardType,
-      autofocus: true,
+      autofocus: autofocus ?? false,
       onChanged: onChanged,
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hint,
-        contentPadding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 20.w),
+        contentPadding: contentPadding,
         hintStyle:
-            TextStyle(fontSize: 16.sp, color: AppColor.textColorSecondary),
+            TextStyle(fontSize: 13.sp, color: AppColor.textColorSecondary,fontWeight: FontWeight.w400),
         prefix: prefix,
         prefixIcon: getPrefixIcon(),
         suffixIcon: suffixIcon,
         focusColor: AppColor.white,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.r)),
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15.r),
-            borderSide: const BorderSide(color: AppColor.mainColor)),
+        border: border,
+        enabledBorder: enableBorder,
         fillColor: Colors.black26,
       ),
     );

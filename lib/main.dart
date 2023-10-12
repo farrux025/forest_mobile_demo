@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:forest_mobile/service/dio_client.dart';
+import 'package:forest_mobile/service/location_service.dart';
 import 'package:forest_mobile/views/app_scaffold.dart';
+import 'package:yandex_mapkit/yandex_mapkit.dart';
 
-void main() {
+void main() async {
+  AndroidYandexMap.useAndroidViewSurface = false;
+  WidgetsFlutterBinding.ensureInitialized();
+  LocationService.listen;
+  await LocationService.determinePosition();
+  await DioClient.init();
   runApp(const MyApp());
 }
 

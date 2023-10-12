@@ -2,12 +2,13 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forest_mobile/components/app_text.dart';
-import 'package:forest_mobile/components/functions.dart';
 import 'package:forest_mobile/constants/colors.dart';
+import 'package:forest_mobile/main.dart';
 import 'package:forest_mobile/views/home/home.dart';
 import 'package:forest_mobile/views/more/profile_screen.dart';
-import 'package:forest_mobile/views/saved/saveds_screen.dart';
+import 'package:forest_mobile/views/sos/sos_screen.dart';
 
+import 'map/map_screen.dart';
 import 'send_message/send_message_screen.dart';
 
 class AppScaffold extends StatefulWidget {
@@ -25,26 +26,27 @@ class _AppScaffoldState extends State<AppScaffold> {
   int currentIndex = 0;
   List<IconData> iconList = [
     Icons.home,
+    Icons.map,
     Icons.edit_document,
-    Icons.favorite,
     Icons.more_horiz,
   ];
 
   List<Widget> tabs = [
     const HomeScreen(),
+    const MapScreen(),
     const SendMessageScreen(),
-    const SavedOnesScreen(),
     const ProfileScreen()
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: widget.backgroundColor ?? AppColor.backgroundColorDarker,
+      backgroundColor: AppColor.white,
       appBar: widget.appBar,
       body: widget.body ?? tabs[currentIndex],
       floatingActionButton: FloatingActionButton(
-        onPressed: () => call(phone: '+998998188103'),
+        onPressed: () => MyApp.navigatorKey.currentState
+            ?.push(MaterialPageRoute(builder: (context) => const SOSScreen())),
         heroTag: 'sos',
         shape: const CircleBorder(),
         backgroundColor: AppColor.mainColor,
@@ -65,6 +67,7 @@ class _AppScaffoldState extends State<AppScaffold> {
         gapWidth: 80.w,
         gapLocation: GapLocation.center,
         notchSmoothness: NotchSmoothness.softEdge,
+        splashColor: AppColor.mainColor.withOpacity(0.3),
         leftCornerRadius: 16.r,
         rightCornerRadius: 16.r,
         onTap: (index) => setState(() {
