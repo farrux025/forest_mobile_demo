@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:forest_mobile/main.dart';
 import 'package:forest_mobile/service/auth_service.dart';
@@ -19,13 +20,11 @@ class OneIDCubit extends Cubit<OneIDState> {
         if (response.statusCode == 200) {
           var url = response.data['url'];
           log("One ID url: $url");
-          MyApp.navigatorKey.currentState?.push(
-              MaterialPageRoute(builder: (context) => OneIDScreen(url: url),));
-          emit(OneIDLoaded());
+          emit(OneIDLoaded(url));
         }
       });
     } on DioException catch (e) {
-      emit(OneIDError());
+      emit(OneIDError(e.error.toString()));
       log("Error in ONE ID: $e");
     }
   }

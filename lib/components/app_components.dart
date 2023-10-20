@@ -73,3 +73,22 @@ toast({required String message}) {
       fontSize: 16.sp,
       toastLength: Toast.LENGTH_SHORT);
 }
+
+appButton(
+    {required String text,
+    required Color color,
+    required VoidCallback onPressed}) {
+  return MaterialButton(
+    onPressed: onPressed,
+    color: color,
+    minWidth: ScreenUtil().screenWidth,
+    height: 44.h,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14.r)),
+    child: AppText(
+      text: text,
+      size: 14.sp,
+      color: AppColor.white,
+      fontWeight: FontWeight.w600,
+    ),
+  );
+}

@@ -3,8 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forest_mobile/components/app_text.dart';
 import 'package:forest_mobile/constants/colors.dart';
 import 'package:forest_mobile/main.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../components/functions.dart';
 import 'send_warning_screen.dart';
@@ -39,14 +37,8 @@ class SOSScreen extends StatelessWidget {
               title: "Ogohlantirish yuborish",
               subTitle: "Sodir bo'lgan hodisalar haqida ogohlantirish berish",
               onPressed: () {
-                Geolocator.getCurrentPosition().then((pos) {
-                  Point initialPoint =
-                      Point(latitude: pos.latitude, longitude: pos.longitude);
-                  MyApp.navigatorKey.currentState?.push(MaterialPageRoute(
-                      builder: (context) => SendWarningScreen(
-                            initialPoint: initialPoint,
-                          )));
-                });
+                MyApp.navigatorKey.currentState?.push(MaterialPageRoute(
+                    builder: (context) => const SendWarningScreen()));
               }),
         ],
       ),

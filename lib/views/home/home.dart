@@ -117,6 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
+        leading: const SizedBox(),
         surfaceTintColor: AppColor.backgroundColorDarker,
         backgroundColor: AppColor.backgroundColorDarker,
         title: ColorFiltered(

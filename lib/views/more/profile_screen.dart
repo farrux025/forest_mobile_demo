@@ -13,13 +13,15 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColor.backgroundColorDarker,
       appBar: AppBar(
+        leading: const SizedBox(),
+        centerTitle: true,
         surfaceTintColor: AppColor.backgroundColorDarker,
         backgroundColor: AppColor.backgroundColorDarker,
         title: AppText(
             text: "Settings",
             size: 16.sp,
-            color: AppColor.mainColor,
-            fontWeight: FontWeight.w500),
+            color: AppColor.textColor,
+            fontWeight: FontWeight.w800),
       ),
       body: Column(
         children: [
@@ -46,24 +48,25 @@ class ProfileScreen extends StatelessWidget {
       Widget? trailing,
       required VoidCallback onPressed}) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 14.w),
-      width: ScreenUtil().screenWidth,
+      margin: EdgeInsets.symmetric(vertical: 6.h, horizontal: 16.w),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.sp), color: AppColor.white),
       child: MaterialButton(
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+        height: 50.h,
         onPressed: onPressed,
+        padding: EdgeInsets.symmetric(horizontal: 12.w),
         child: Row(
           children: [
-            leading == null
-                ? const SizedBox()
-                : Flexible(
-                    flex: 1,
-                    child: CircleAvatar(
-                      backgroundColor: AppColor.backgroundColorDarker,
-                      child:
-                          Icon(leading, color: AppColor.mainColor, size: 20.sp),
-                    ),
-                  ),
+            Flexible(
+              flex: leading != null ? 1 : 0,
+              child: CircleAvatar(
+                radius: 18.r,
+                backgroundColor: AppColor.backgroundColorDarker,
+                child: Icon(leading, color: AppColor.mainColor, size: 20.sp),
+              ),
+            ),
             Flexible(
                 flex: 4,
                 child: AppText(

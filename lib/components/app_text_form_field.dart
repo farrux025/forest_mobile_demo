@@ -21,6 +21,7 @@ class AppTextFormField extends StatelessWidget {
   InputBorder? border;
   InputBorder? enableBorder;
   EdgeInsetsGeometry? contentPadding;
+  double? textSize;
 
   AppTextFormField(
       {this.labelText,
@@ -39,6 +40,7 @@ class AppTextFormField extends StatelessWidget {
       this.border,
       this.enableBorder,
       this.contentPadding,
+      this.textSize,
       Key? key})
       : super(key: key);
 
@@ -49,7 +51,10 @@ class AppTextFormField extends StatelessWidget {
       controller: textEditingController,
       maxLines: maxLines,
       maxLength: maxLength,
-      style: TextStyle(fontSize: 14.sp,color: AppColor.textColor,fontWeight: FontWeight.w500),
+      style: TextStyle(
+          fontSize: textSize ?? 14.sp,
+          color: AppColor.textColor,
+          fontWeight: FontWeight.w500),
       inputFormatters: inputFormatter,
       keyboardType: keyboardType,
       autofocus: autofocus ?? false,
@@ -58,8 +63,10 @@ class AppTextFormField extends StatelessWidget {
         labelText: labelText,
         hintText: hint,
         contentPadding: contentPadding,
-        hintStyle:
-            TextStyle(fontSize: 13.sp, color: AppColor.textColorSecondary,fontWeight: FontWeight.w400),
+        hintStyle: TextStyle(
+            fontSize: 13.sp,
+            color: AppColor.textColorSecondary,
+            fontWeight: FontWeight.w400),
         prefix: prefix,
         prefixIcon: getPrefixIcon(),
         suffixIcon: suffixIcon,

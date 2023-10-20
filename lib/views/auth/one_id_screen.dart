@@ -1,6 +1,9 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:forest_mobile/constants/variables.dart';
+import 'package:forest_mobile/service/dio_client.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../main.dart';
@@ -39,9 +42,9 @@ class _OneIDScreenState extends State<OneIDScreen> {
             log("onWebResourceError; $error");
           },
           onNavigationRequest: (NavigationRequest request) {
-
             if (request.url.contains('?code=')) {
               log("request url: ${request.url}");
+              login(request.url);
               MyApp.navigatorKey.currentState?.pushReplacement(
                   MaterialPageRoute(builder: (context) => AppScaffold()));
               return NavigationDecision.navigate;
@@ -58,8 +61,27 @@ class _OneIDScreenState extends State<OneIDScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+          backgroundColor: const Color(0xFF4C06AA),
+          leading: const BackButton(color: Colors.white)),
       body: SafeArea(child: WebViewWidget(controller: webViewController)),
     );
+  }
+
+  login(String url) async {
+    try {
+      Response response = await DioClient.instance
+          .get(url.replaceAll(AppUrl.baseUrl, ""), queryParameters: {
+        // "device_id":"test_id",
+        // "device_model":"test_model"
+      });
+      if (response.statusCode == 200) {
+        log("OneID login response: $response");
+      }
+    } on DioException catch (error) {
+      log("Dio Error one id screen catch: $error");
+    } catch (e) {
+      log("Error one id screen catch: $e");
+    }
   }
 }

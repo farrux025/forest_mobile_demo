@@ -18,7 +18,7 @@ class ForestItem extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 8.w),
       decoration: BoxDecoration(
           color: AppColor.white,
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(10.r),
           boxShadow: [
             BoxShadow(
                 color: AppColor.textColorSecondary.withOpacity(0.5),
@@ -31,10 +31,8 @@ class ForestItem extends StatelessWidget {
         children: [
           Flexible(
               flex: 5,
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(12.r))),
+              child: ClipRRect(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(10.r)),
                 child: Image.asset(
                     forestDetails.imageList?[0] ?? AppImages.forestLogoPng,
                     width: forestDetails.imageList != []
