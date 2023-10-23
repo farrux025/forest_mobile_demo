@@ -1,8 +1,12 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:forest_mobile/components/app_components.dart';
+import 'package:forest_mobile/constants/colors.dart';
 import 'package:forest_mobile/constants/variables.dart';
+import 'package:forest_mobile/models/auth/OneIDLoginResponse.dart';
 import 'package:forest_mobile/service/dio_client.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -45,8 +49,6 @@ class _OneIDScreenState extends State<OneIDScreen> {
             if (request.url.contains('?code=')) {
               log("request url: ${request.url}");
               login(request.url);
-              MyApp.navigatorKey.currentState?.pushReplacement(
-                  MaterialPageRoute(builder: (context) => AppScaffold()));
               return NavigationDecision.navigate;
             }
             return NavigationDecision.navigate;
@@ -70,13 +72,28 @@ class _OneIDScreenState extends State<OneIDScreen> {
 
   login(String url) async {
     try {
+      var context = MyApp.navigatorKey.currentState?.context;
+      String platform = '';
+      bool isAndroid = Theme.of(context!).platform == TargetPlatform.android;
+      bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+      if (isAndroid) platform = TargetPlatform.android.name;
+      if (isIOS) platform = TargetPlatform.iOS.name;
+      var deviceToken = await FirebaseMessaging.instance.getToken();
+      log("Token: $deviceToken, Platform: $platform");
       Response response = await DioClient.instance
           .get(url.replaceAll(AppUrl.baseUrl, ""), queryParameters: {
-        // "device_id":"test_id",
-        // "device_model":"test_model"
+        "device_id": deviceToken,
+        "device_model": platform
       });
       if (response.statusCode == 200) {
         log("OneID login response: $response");
+        openSnackBar(
+            message: "One ID login iss successful",
+            background: AppColor.mainColor.withOpacity(0.8));
+        var data = OneIdLoginResponse.fromJson(response.data);
+        log("Token: ${data.accessToken}");
+        MyApp.navigatorKey.currentState?.pushReplacement(
+            MaterialPageRoute(builder: (context) => AppScaffold()));
       }
     } on DioException catch (error) {
       log("Dio Error one id screen catch: $error");

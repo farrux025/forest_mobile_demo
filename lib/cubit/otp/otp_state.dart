@@ -15,11 +15,12 @@ class OtpLoading extends OtpState {
 
 class OtpLoaded extends OtpState {
   final bool? success;
+  final String? phone;
 
-  OtpLoaded(this.success);
+  OtpLoaded(this.success, this.phone);
 
   @override
-  List<Object?> get props => [success];
+  List<Object?> get props => [success, phone];
 }
 
 class OtpError extends OtpState {

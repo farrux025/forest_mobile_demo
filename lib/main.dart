@@ -1,13 +1,13 @@
-import 'dart:developer';
-
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forest_mobile/service/dio_client.dart';
 import 'package:forest_mobile/service/location_service.dart';
+import 'package:forest_mobile/service/secure_storage.dart';
 import 'package:forest_mobile/views/app_scaffold.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
+
+import 'firebase_options.dart';
 
 void main() async {
   AndroidYandexMap.useAndroidViewSurface = false;
@@ -15,9 +15,8 @@ void main() async {
   LocationService.listen;
   await LocationService.determinePosition();
   await DioClient.init();
-  await Firebase.initializeApp();
-  var aaa = await FirebaseMessaging.instance.getToken();
-  log("Token: $aaa");
+  SecureStorage.init();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 

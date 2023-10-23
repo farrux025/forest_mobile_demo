@@ -19,10 +19,10 @@ class UserExistCubit extends Cubit<UserExistState> {
   var phoneController = TextEditingController();
 
   userExist() async {
-    emit(UserExistLoading());
-    closeKeyboard();
     try {
       if (keyPhone.currentState!.validate()) {
+        emit(UserExistLoading());
+        closeKeyboard();
         String number = PREFIX_PHONE + phoneController.text;
         var phone = getPhone(phone: number);
         log("Phone: $phone");

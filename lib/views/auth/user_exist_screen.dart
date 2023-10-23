@@ -8,6 +8,7 @@ import 'package:forest_mobile/constants/colors.dart';
 import 'package:forest_mobile/constants/images.dart';
 import 'package:forest_mobile/cubit/one_id/one_id_cubit.dart';
 import 'package:forest_mobile/cubit/user_exist/user_exist_cubit.dart';
+import 'package:forest_mobile/views/auth/otp_screen.dart';
 import 'package:forest_mobile/views/auth/register_screen.dart';
 
 import '../../components/functions.dart';
@@ -44,9 +45,11 @@ class _UserExistScreenState extends State<UserExistScreen> {
                     builder: (context) =>
                         RegisterScreen(phone: getPhone(phone: state.phone))));
               } else {
-                openSnackBar(
-                    message: "${state.phone} is exist",
-                    background: AppColor.mainColor.withOpacity(0.7));
+                // openSnackBar(
+                //     message: "${state.phone} is exist",
+                //     background: AppColor.mainColor.withOpacity(0.7));
+                MyApp.navigatorKey.currentState?.push(MaterialPageRoute(
+                    builder: (context) => OtpScreen(phone: state.phone)));
               }
             }
           },
@@ -95,7 +98,9 @@ class _UserExistScreenState extends State<UserExistScreen> {
                                       color: AppColor.textColor),
                                   validator: (value) => AppTextValidator(
                                       watch.phoneController.text,
-                                      required: true),
+                                      required: true,
+                                      minLength: 14),
+                                  // (94) 170-61-11
                                   inputFormatter: [Mask.PHONE_NUMBER],
                                 ),
                               ),

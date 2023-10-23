@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forest_mobile/components/app_components.dart';
 import 'package:forest_mobile/components/app_text.dart';
 import 'package:forest_mobile/cubit/register/register_cubit.dart';
+import 'package:forest_mobile/main.dart';
+import 'package:forest_mobile/views/auth/otp_screen.dart';
 
 import '../../components/app_text_form_field.dart';
 import '../../components/functions.dart';
@@ -40,6 +42,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             }
             if (state is RegisterLoaded) {
               MyDialog.closeLoading();
+              MyApp.navigatorKey.currentState?.push(MaterialPageRoute(
+                  builder: (context) => OtpScreen(phone: widget.phone)));
             }
           },
           child: BlocBuilder<RegisterCubit, RegisterState>(

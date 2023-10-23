@@ -4,9 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:forest_mobile/main.dart';
 import 'package:forest_mobile/service/auth_service.dart';
-import 'package:forest_mobile/views/auth/one_id_screen.dart';
 
 part 'one_id_state.dart';
 
