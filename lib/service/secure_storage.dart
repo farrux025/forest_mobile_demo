@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SecureStorage {
@@ -10,6 +12,7 @@ class SecureStorage {
   static const token = 'token';
 
   static init() {
+    log("SecureStorage init");
     secureStorage = const FlutterSecureStorage();
   }
 
@@ -30,5 +33,9 @@ class SecureStorage {
     await SecureStorage.delete(key: SecureStorage.authType);
     await SecureStorage.delete(key: SecureStorage.token);
     await SecureStorage.delete(key: SecureStorage.userId);
+  }
+
+  static Future<bool> containsKey({required String key}) async {
+    return await secureStorage.containsKey(key: key);
   }
 }

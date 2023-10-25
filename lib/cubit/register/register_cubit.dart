@@ -39,7 +39,8 @@ class RegisterCubit extends Cubit<RegisterState> {
           emit(RegisterLoaded(registerResponse.success));
         } else {
           log("Register is not successful\n");
-          emit(RegisterLoaded(registerResponse.success));
+          emit(RegisterError(
+              registerResponse.msg ?? 'Register is not successful'));
         }
       }
     } on DioException catch (exp) {

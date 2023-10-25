@@ -8,6 +8,7 @@ import 'package:forest_mobile/constants/colors.dart';
 import 'package:forest_mobile/constants/variables.dart';
 import 'package:forest_mobile/models/auth/OneIDLoginResponse.dart';
 import 'package:forest_mobile/service/dio_client.dart';
+import 'package:forest_mobile/service/secure_storage.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../main.dart';
@@ -92,6 +93,13 @@ class _OneIDScreenState extends State<OneIDScreen> {
             background: AppColor.mainColor.withOpacity(0.8));
         var data = OneIdLoginResponse.fromJson(response.data);
         log("Token: ${data.accessToken}");
+        await SecureStorage.write(
+            key: SecureStorage.token, value: data.accessToken ?? 'Error token');
+        await SecureStorage.write(
+            key: SecureStorage.authType,
+            value: data.data?.authType ?? 'Error authType');
+        await SecureStorage.write(
+            key: SecureStorage.phone, value: data.data?.phone ?? 'Error phone');
         MyApp.navigatorKey.currentState?.pushReplacement(
             MaterialPageRoute(builder: (context) => AppScaffold()));
       }

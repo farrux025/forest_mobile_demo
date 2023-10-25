@@ -4,9 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:forest_mobile/components/app_components.dart';
 import 'package:forest_mobile/components/functions.dart';
-import 'package:forest_mobile/constants/colors.dart';
 import 'package:forest_mobile/models/auth/UserExistResponse.dart';
 import 'package:forest_mobile/service/auth_service.dart';
 
@@ -33,7 +31,7 @@ class UserExistCubit extends Cubit<UserExistState> {
           emit(UserExistLoaded(userExistResponse.success, phone));
           log("$phone is exist");
         } else {
-          emit(UserExistLoaded(userExistResponse.success, phone));
+          emit(UserExistError(userExistResponse.msg ?? '$phone is not exist'));
           log("$phone is not exist");
         }
       }

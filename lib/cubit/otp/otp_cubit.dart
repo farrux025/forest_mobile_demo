@@ -12,6 +12,8 @@ import 'package:forest_mobile/models/auth/ActivateRequest.dart';
 import 'package:forest_mobile/models/auth/ActivateResponse.dart';
 import 'package:forest_mobile/service/auth_service.dart';
 
+import '../../service/secure_storage.dart';
+
 part 'otp_state.dart';
 
 class OtpCubit extends Cubit<OtpState> {
@@ -46,11 +48,19 @@ class OtpCubit extends Cubit<OtpState> {
           openSnackBar(
               message: "User activated Successfully",
               background: AppColor.mainColor.withOpacity(0.8));
+          await SecureStorage.write(
+              key: SecureStorage.token,
+              value: activateResponse.accessToken ?? 'Error token');
+          await SecureStorage.write(
+              key: SecureStorage.authType,
+              value: activateResponse.data?.authType ?? 'Error authType');
+          await SecureStorage.write(
+              key: SecureStorage.phone,
+              value: activateResponse.data?.phone ?? 'Error phone');
           emit(OtpLoaded(activateResponse.success, phone));
         } else {
           log("User not activated");
-          openSnackBar(message: 'User not activated');
-          emit(OtpLoaded(activateResponse.success, phone));
+          emit(OtpError(activateResponse.msg ?? 'User not activated'));
         }
       }
     } on DioException catch (exp) {

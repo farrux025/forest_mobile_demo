@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class AppUrl {
-  static const baseUrl = "https://52ea-213-230-114-157.ngrok-free.app";
+  static const baseUrl = "https://04f6-213-230-114-157.ngrok-free.app";
 
   // auth-----------------------------------------------------------------------
 
@@ -14,6 +14,7 @@ class AppUrl {
 
   static const uploadImageUrl = "/message/api/v1/upload";
   static const sendWarningMessageUrl = "/message/api/v1/create";
+  static const eventTypeListUrl = "/message/api/v1/type/list";
 }
 
 class MyValueNotifiers {

@@ -13,6 +13,7 @@ class SOSScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.backgroundColorDarker,
       appBar: AppBar(
           leading: const BackButton(color: AppColor.textColor),
           title: AppText(
