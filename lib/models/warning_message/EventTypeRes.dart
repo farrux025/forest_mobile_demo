@@ -1,12 +1,22 @@
+import 'package:forest_mobile/service/hive/hive_store.dart';
+import 'package:hive/hive.dart';
+
 /// id : 3
 /// name : "TARNADO"
 /// ord : 1
 /// status : "NEW"
 
+part 'EventTypeRes.g.dart';
+
+@HiveType(typeId: MyHiveTypeId.eventTypeResID)
 class EventTypeRes {
+  @HiveField(0)
   num? id;
+  @HiveField(1)
   String? name;
+  @HiveField(2)
   num? ord;
+  @HiveField(3)
   String? status;
 
   EventTypeRes({

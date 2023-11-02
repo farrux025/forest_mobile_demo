@@ -14,6 +14,7 @@ import 'package:forest_mobile/cubit/warning_message/event_type_cubit.dart';
 import 'package:forest_mobile/cubit/warning_message/warning_message_cubit.dart';
 import 'package:forest_mobile/models/image/UploadImageResponse.dart';
 import 'package:forest_mobile/models/warning_message/EventTypeRes.dart';
+import 'package:forest_mobile/service/hive/hive_store.dart';
 import 'package:forest_mobile/service/image_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
@@ -35,7 +36,10 @@ class _SendWarningScreenState extends State<SendWarningScreen> {
   Point initialPoint = const Point(latitude: 41.222, longitude: 69.222);
   Point target = const Point(latitude: 41.222, longitude: 69.222);
 
-  EventTypeRes dropdownValue = EventTypeRes(name: "Tanlang");
+  EventTypeRes? dropdownValue;
+  List<EventTypeRes> eventList = [
+    EventTypeRes(name: "Tanlang", id: 0, ord: 2, status: "OK")
+  ];
 
   @override
   void initState() {
@@ -44,152 +48,199 @@ class _SendWarningScreenState extends State<SendWarningScreen> {
       initialPoint = Point(latitude: pos.latitude, longitude: pos.longitude);
     });
     target = initialPoint;
+    dropdownValue = eventList[0];
   }
 
   @override
   Widget build(BuildContext context) {
-    List<DropdownMenuItem<EventTypeRes>> eventList = [
-      _eventItem(event: EventTypeRes(name: "Suv toshqini")),
-      _eventItem(event: EventTypeRes(name: "Sel")),
-    ];
     return BlocProvider(
-      create: (BuildContext context) => WarningMessageCubit(),
-      child: BlocListener<WarningMessageCubit, WarningMessageState>(
+      create: (BuildContext context) => EventTypeCubit(),
+      child: BlocListener<EventTypeCubit, EventTypeState>(
         listener: (BuildContext context, state) {
-          if (state is WarningMessageLoading) {
+          if (state is EventTypeLoading) {
             MyDialog.openLoading();
           }
-          if (state is WarningMessageError) {
+          if (state is EventTypeError) {
             closeKeyboard();
             MyDialog.closeLoading();
+            var list = HiveStore.eventTypeResListBox
+                .get(MyHiveBoxName.eventTypeResListBox);
+            eventList.addAll(list ?? []);
+            dropdownValue = eventList.isNotEmpty ? eventList[0] : null;
             openSnackBar(message: state.error);
           }
-          if (state is WarningMessageLoaded) {
+          if (state is EventTypeLoaded) {
+            eventList.clear();
+            eventList.addAll(state.eventList);
+            dropdownValue = eventList.isNotEmpty ? eventList[0] : null;
             closeKeyboard();
             MyDialog.closeLoading();
-            openSnackBar(message: state.response.title ?? '');
           }
         },
-        child: BlocBuilder<WarningMessageCubit, WarningMessageState>(
+        child: BlocBuilder<EventTypeCubit, EventTypeState>(
           builder: (context, state) {
-            var readWM = context.read<WarningMessageCubit>();
-            var watchWM = context.watch<WarningMessageCubit>();
-            return Scaffold(
-              backgroundColor: AppColor.backgroundColorDarker,
-              appBar: AppBar(
-                title: AppText(
-                    text: "Ogohlantirish yuborish",
-                    size: 16.sp,
-                    color: AppColor.textColor,
-                    fontWeight: FontWeight.w700),
-                centerTitle: true,
-                elevation: 0,
-                surfaceTintColor: AppColor.backgroundColorDarker,
-                backgroundColor: AppColor.backgroundColorDarker,
-              ),
-              body: SingleChildScrollView(
-                child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _title(title: "Hodisa turi"),
-                        BlocProvider(
-                          create: (BuildContext context) => EventTypeCubit(),
-                          child: BlocListener<EventTypeCubit, EventTypeState>(
-                            listener: (BuildContext context, state) {},
-                            child: BlocBuilder<EventTypeCubit, EventTypeState>(
-                              builder: (context, state) {
-                                var read = context.read<EventTypeCubit>();
-                                return Container(
-                                  width: ScreenUtil().screenWidth - 50.w,
+            return BlocProvider(
+              create: (BuildContext context) => WarningMessageCubit(),
+              child: BlocListener<WarningMessageCubit, WarningMessageState>(
+                listener: (BuildContext context, state) {
+                  if (state is WarningMessageLoading) {
+                    MyDialog.openLoading();
+                  }
+                  if (state is WarningMessageError) {
+                    closeKeyboard();
+                    MyDialog.closeLoading();
+                    openSnackBar(message: state.error);
+                  }
+                  if (state is WarningMessageLoaded) {
+                    closeKeyboard();
+                    MyDialog.closeLoading();
+                    openSnackBar(message: state.response.title ?? '');
+                  }
+                },
+                child: BlocBuilder<WarningMessageCubit, WarningMessageState>(
+                  builder: (context, state) {
+                    var readWM = context.read<WarningMessageCubit>();
+                    var watchWM = context.watch<WarningMessageCubit>();
+                    return Scaffold(
+                      backgroundColor: AppColor.backgroundColorDarker,
+                      appBar: AppBar(
+                        title: AppText(
+                            text: "Ogohlantirish yuborish",
+                            size: 16.sp,
+                            color: AppColor.textColor,
+                            fontWeight: FontWeight.w700),
+                        centerTitle: true,
+                        elevation: 0,
+                        surfaceTintColor: AppColor.backgroundColorDarker,
+                        backgroundColor: AppColor.backgroundColorDarker,
+                      ),
+                      body: SingleChildScrollView(
+                        child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 16.w),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _title(title: "Hodisa turi"),
+                                Container(
+                                  width: ScreenUtil().screenWidth,
+                                  height: 44.h,
+                                  alignment: AlignmentDirectional.centerStart,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8.r),
                                       color: AppColor.white),
-                                  child: DropdownButtonFormField<EventTypeRes>(
+                                  child: DropdownButtonFormField(
+                                    // selectedItemBuilder: (context) {
+                                    //   return eventList.map((val) {
+                                    //     return Container(
+                                    //       margin: EdgeInsets.symmetric(horizontal: 30.w),
+                                    //         child: AppText(
+                                    //             text: val.name ?? '',
+                                    //             color: Colors.green));
+                                    //   }).toList();
+                                    // },
                                     decoration: const InputDecoration(
                                         border: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        contentPadding: EdgeInsets.zero,
                                         hintText: "Tanlang"),
-                                    // value: dropdownValue,
-                                    items: eventList,
+                                    value: dropdownValue,
+                                    items: eventList
+                                        .map((item) =>
+                                            DropdownMenuItem<EventTypeRes>(
+                                                value: item,
+                                                child: AppText(
+                                                  text: item.name ?? '',
+                                                )))
+                                        .toList(),
                                     onChanged: (EventTypeRes? value) =>
-                                        setState(() => dropdownValue = value!),
-                                    onTap: () => read.getEventList(),
+                                        setState(() {
+                                      dropdownValue = value!;
+                                      log("DropdownMenu Value: ${dropdownValue?.name}");
+                                    }),
+                                    // onTap: () => read.getEventList(),
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 10.w, vertical: 0),
                                   ),
-                                );
-                              },
-                            ),
+                                ),
+                                SizedBox(height: 10.h),
+                                _title(title: "Hodisa nomi"),
+                                Form(
+                                  key: watchWM.keyTitle,
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.r),
+                                          color: AppColor.white),
+                                      child: AppTextFormField(
+                                        enableBorder: InputBorder.none,
+                                        border: InputBorder.none,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 10.w),
+                                        hint: 'Hodisa nomi',
+                                        keyboardType: TextInputType.text,
+                                        textEditingController:
+                                            watchWM.titleController,
+                                        validator: (value) => AppTextValidator(
+                                            watchWM.titleController.text.trim(),
+                                            required: true),
+                                      )),
+                                ),
+                                SizedBox(height: 10.h),
+                                _title(title: "To'liqroq tavsifi"),
+                                Form(
+                                  key: watchWM.keyDesc,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(8.r),
+                                        color: AppColor.white),
+                                    child: AppTextFormField(
+                                        textEditingController:
+                                            watchWM.descController,
+                                        maxLines: 4,
+                                        hint:
+                                            "Hodisa haqida batafsilroq yozing",
+                                        border: InputBorder.none,
+                                        enableBorder: InputBorder.none,
+                                        validator: (value) => AppTextValidator(
+                                            watchWM.descController.text.trim(),
+                                            required: true),
+                                        keyboardType: TextInputType.text,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 10.w, vertical: 6.h)),
+                                  ),
+                                ),
+                                SizedBox(height: 10.h),
+                                _title(title: "Hodisa suratini yuklash"),
+                                _imagesWidget(),
+                                SizedBox(height: 10.h),
+                                // _mapWidget()
+                              ],
+                            )),
+                      ),
+                      bottomNavigationBar: Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 16.h),
+                        child: MaterialButton(
+                          onPressed: () {
+                            readWM.createWarningMessage();
+                          },
+                          height: 48.h,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.r)),
+                          color: AppColor.mainColor,
+                          child: AppText(
+                            text: "Yuborish",
+                            color: AppColor.white,
+                            size: 14.sp,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
-                        SizedBox(height: 10.h),
-                        _title(title: "Hodisa nomi"),
-                        Form(
-                          key: watchWM.keyTitle,
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.r),
-                                  color: AppColor.white),
-                              child: AppTextFormField(
-                                enableBorder: InputBorder.none,
-                                border: InputBorder.none,
-                                contentPadding:
-                                    EdgeInsets.symmetric(horizontal: 10.w),
-                                hint: 'Hodisa nomi',
-                                keyboardType: TextInputType.text,
-                                textEditingController: watchWM.titleController,
-                                validator: (value) => AppTextValidator(
-                                    watchWM.titleController.text.trim(),
-                                    required: true),
-                              )),
-                        ),
-                        SizedBox(height: 10.h),
-                        _title(title: "To'liqroq tavsifi"),
-                        Form(
-                          key: watchWM.keyDesc,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8.r),
-                                color: AppColor.white),
-                            child: AppTextFormField(
-                                textEditingController: watchWM.descController,
-                                maxLines: 4,
-                                hint: "Hodisa haqida batafsilroq yozing",
-                                border: InputBorder.none,
-                                enableBorder: InputBorder.none,
-                                validator: (value) => AppTextValidator(
-                                    watchWM.descController.text.trim(),
-                                    required: true),
-                                keyboardType: TextInputType.text,
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 10.w, vertical: 6.h)),
-                          ),
-                        ),
-                        SizedBox(height: 10.h),
-                        _title(title: "Hodisa suratini yuklash"),
-                        _imagesWidget(),
-                        SizedBox(height: 10.h),
-                        _mapWidget()
-                      ],
-                    )),
-              ),
-              bottomNavigationBar: Container(
-                margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-                child: MaterialButton(
-                  onPressed: () {
-                    readWM.createWarningMessage();
+                      ),
+                    );
                   },
-                  height: 48.h,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.r)),
-                  color: AppColor.mainColor,
-                  child: AppText(
-                    text: "Yuborish",
-                    color: AppColor.white,
-                    size: 14.sp,
-                    fontWeight: FontWeight.w700,
-                  ),
                 ),
               ),
             );

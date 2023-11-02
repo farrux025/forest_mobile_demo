@@ -22,6 +22,8 @@ class AppTextFormField extends StatelessWidget {
   InputBorder? enableBorder;
   EdgeInsetsGeometry? contentPadding;
   double? textSize;
+  bool? readOnly;
+  String? initialValue;
 
   AppTextFormField(
       {this.labelText,
@@ -41,6 +43,8 @@ class AppTextFormField extends StatelessWidget {
       this.enableBorder,
       this.contentPadding,
       this.textSize,
+      this.readOnly,
+      this.initialValue,
       Key? key})
       : super(key: key);
 
@@ -50,7 +54,10 @@ class AppTextFormField extends StatelessWidget {
       validator: validator,
       controller: textEditingController,
       maxLines: maxLines,
+      initialValue: initialValue,
       maxLength: maxLength,
+      cursorWidth: 3,
+      readOnly: readOnly ?? false,
       style: TextStyle(
           fontSize: textSize ?? 14.sp,
           color: AppColor.textColor,

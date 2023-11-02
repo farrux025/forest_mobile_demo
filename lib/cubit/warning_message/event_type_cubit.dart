@@ -7,11 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:forest_mobile/constants/variables.dart';
 import 'package:forest_mobile/models/warning_message/EventTypeRes.dart';
 import 'package:forest_mobile/service/dio_client.dart';
+import 'package:forest_mobile/service/hive/hive_store.dart';
 
 part 'event_type_state.dart';
 
 class EventTypeCubit extends Cubit<EventTypeState> {
-  EventTypeCubit() : super(EventTypeInitial());
+  EventTypeCubit() : super(EventTypeLoading()) {
+    getEventList();
+  }
 
   getEventList() async {
     emit(EventTypeLoading());
@@ -28,6 +31,7 @@ class EventTypeCubit extends Cubit<EventTypeState> {
             eventList.add(eventTypeRes);
           });
         }
+        HiveSaver.saveEventTypeRes(eventList);
         emit(EventTypeLoaded(eventList));
       }
     } on DioException catch (e) {

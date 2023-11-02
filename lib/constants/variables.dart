@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 class AppUrl {
-  static const baseUrl = "https://04f6-213-230-114-157.ngrok-free.app";
+  static const baseUrl = "https://04d2-213-230-78-55.ngrok-free.app";
 
   // auth-----------------------------------------------------------------------
 

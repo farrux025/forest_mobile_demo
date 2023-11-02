@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../constants/colors.dart';
 import '../main.dart';
 import 'app_text.dart';
+import 'app_text_form_field.dart';
 
 openSnackBar({required String message, Color? background}) {
   var context = MyApp.navigatorKey.currentState!.context;
@@ -91,4 +92,46 @@ appButton(
       fontWeight: FontWeight.w600,
     ),
   );
+}
+
+titleEditText({required String title}) {
+  return Padding(
+    padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
+    child: AppText(
+      text: title,
+      color: AppColor.textColorGreen,
+      size: 11.sp,
+      fontWeight: FontWeight.w600,
+    ),
+  );
+}
+
+editText(
+    {TextEditingController? editingController,
+    String? hint,
+    TextInputType? inputType,
+    int? maxLines,
+    bool? readOnly,
+    String? initialValue,
+    FormFieldValidator<String>? validator}) {
+  return Container(
+      // height: (maxLines == 1) ? 32.h : null,
+      margin: EdgeInsets.only(bottom: 8.h),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.r),
+          color: readOnly ?? false ? const Color(0x33000000) : const Color(0xfff5f5f5)),
+      child: AppTextFormField(
+        enableBorder: InputBorder.none,
+        border: InputBorder.none,
+        contentPadding: EdgeInsets.symmetric(
+            horizontal: 10.w, vertical: maxLines == 1 ? 0 : 6.h),
+        hint: hint,
+        textSize: 13.sp,
+        readOnly: readOnly,
+        initialValue: initialValue,
+        maxLines: maxLines,
+        keyboardType: inputType,
+        textEditingController: editingController,
+        validator: validator,
+      ));
 }

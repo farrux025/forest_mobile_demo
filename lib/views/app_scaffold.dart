@@ -12,7 +12,7 @@ import 'package:forest_mobile/views/sos/sos_screen.dart';
 
 import '../main.dart';
 import 'map/map_screen.dart';
-import 'send_message/send_message_screen.dart';
+import 'ruxsatnoma/ruxsatnoma_screen.dart';
 
 class AppScaffold extends StatefulWidget {
   AppBar? appBar;

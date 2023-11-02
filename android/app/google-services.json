@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "198979800794",
+    "project_id": "forest-mobile-ff440",
+    "storage_bucket": "forest-mobile-ff440.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198979800794:android:d15a362b2d7bf5b72b5fe3",
+        "android_client_info": {
+          "package_name": "uz.devops.forest_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9IK5KK3wDQYowjPh7uBTCJK6wmtDwHEM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
