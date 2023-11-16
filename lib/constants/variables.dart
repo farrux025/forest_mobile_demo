@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:forest_mobile/main.dart';
+import 'package:forest_mobile/views/app_scaffold.dart';
+import 'package:forest_mobile/views/more/profile_screen.dart';
+import 'package:forest_mobile/views/ruxsatnoma/ruxsatnoma_screen.dart';
 
 class AppUrl {
-  static const baseUrl = "https://04d2-213-230-78-55.ngrok-free.app";
+  static const baseUrl = "https://forest.onemillion.uz";
 
   // auth-----------------------------------------------------------------------
 
@@ -9,6 +14,12 @@ class AppUrl {
   static const userExistUrl = "/accounts/api/v1/login";
   static const registerUrl = "/accounts/api/v1/register";
   static const activateUrl = "/accounts/api/v1/activate";
+
+  // ruxsatnoma-----------------------------------------------------------------
+
+  static const bhmPriceUrl = "/forest/api/v1/bhm/price";
+  static const regionsAndDepartmentsUrl = "/mobile/api/v1/region/list";
+  static const createRuxsatnomaUrl = "/mobile/api/v1/application/create";
 
   // ---------------------------------------------------------------------------
 
@@ -28,4 +39,27 @@ class MyValueNotifiers {
       ValueNotifier<String>(uploadImageLoading);
 
 // *****************************************************************************
+}
+
+class ScreenPath {
+  static const appScaffold = '/appScaffold';
+  static const ruxsatnoma = '/ruxsatnoma';
+  static const profile = '/profile';
+
+  static void pushToScreen(String path) {
+    switch (path) {
+      case appScaffold:
+        MyApp.navigatorKey.currentState?.pushReplacement(
+            MaterialPageRoute(builder: (context) => AppScaffold()));
+        break;
+      case ruxsatnoma:
+        MyApp.navigatorKey.currentState?.pushReplacement(
+            MaterialPageRoute(builder: (context) => const RuxsatnomaScreen()));
+        break;
+      case profile:
+        MyApp.navigatorKey.currentState?.pushReplacement(
+            MaterialPageRoute(builder: (context) => const ProfileScreen()));
+        break;
+    }
+  }
 }

@@ -14,8 +14,11 @@ import '../../constants/images.dart';
 
 class RegisterScreen extends StatefulWidget {
   final String phone;
+  final String screenPath;
 
-  const RegisterScreen({Key? key, required this.phone}) : super(key: key);
+  const RegisterScreen(
+      {Key? key, required this.phone, required this.screenPath})
+      : super(key: key);
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -43,7 +46,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
             if (state is RegisterLoaded) {
               MyDialog.closeLoading();
               MyApp.navigatorKey.currentState?.push(MaterialPageRoute(
-                  builder: (context) => OtpScreen(phone: widget.phone)));
+                  builder: (context) => OtpScreen(
+                      phone: widget.phone, screenPath: widget.screenPath)));
             }
           },
           child: BlocBuilder<RegisterCubit, RegisterState>(

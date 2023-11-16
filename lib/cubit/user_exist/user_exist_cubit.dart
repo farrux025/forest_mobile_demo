@@ -31,7 +31,8 @@ class UserExistCubit extends Cubit<UserExistState> {
           emit(UserExistLoaded(userExistResponse.success, phone));
           log("$phone is exist");
         } else {
-          emit(UserExistError(userExistResponse.msg ?? '$phone is not exist'));
+          // emit(UserExistError(userExistResponse.msg ?? '$phone is not exist'));
+          emit(UserExistLoaded(userExistResponse.success, phone));
           log("$phone is not exist");
         }
       }

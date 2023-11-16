@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -37,7 +36,7 @@ class _AppScaffoldState extends State<AppScaffold> {
   List<Widget> tabs = [
     const HomeScreen(),
     const MapScreen(),
-    const SendMessageScreen(),
+    const RuxsatnomaScreen(),
     const ProfileScreen()
   ];
 

@@ -8,6 +8,7 @@ import 'package:forest_mobile/components/app_components.dart';
 import 'package:forest_mobile/components/app_text.dart';
 import 'package:forest_mobile/components/functions.dart';
 import 'package:forest_mobile/constants/colors.dart';
+import 'package:forest_mobile/constants/variables.dart';
 import 'package:forest_mobile/cubit/otp/otp_cubit.dart';
 import 'package:forest_mobile/main.dart';
 import 'package:forest_mobile/views/app_scaffold.dart';
@@ -17,8 +18,13 @@ import '../../service/auth_service.dart';
 
 class OtpScreen extends StatefulWidget {
   final String phone;
+  final String screenPath;
 
-  const OtpScreen({Key? key, required this.phone}) : super(key: key);
+  const OtpScreen({
+    Key? key,
+    required this.phone,
+    required this.screenPath,
+  }) : super(key: key);
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -73,9 +79,10 @@ class _OtpScreenState extends State<OtpScreen>
             }
             if (state is OtpLoaded) {
               MyDialog.closeLoading();
-              MyApp.navigatorKey.currentState?.pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => AppScaffold()),
-                  (route) => false);
+              ScreenPath.pushToScreen(widget.screenPath);
+              // MyApp.navigatorKey.currentState?.pushAndRemoveUntil(
+              //     MaterialPageRoute(builder: (context) => AppScaffold()),
+              //     (route) => false);
             }
           },
           child: BlocBuilder<OtpCubit, OtpState>(

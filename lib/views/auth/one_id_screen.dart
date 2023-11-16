@@ -8,6 +8,7 @@ import 'package:forest_mobile/constants/colors.dart';
 import 'package:forest_mobile/constants/variables.dart';
 import 'package:forest_mobile/models/auth/OneIDLoginResponse.dart';
 import 'package:forest_mobile/service/dio_client.dart';
+import 'package:forest_mobile/service/hive/hive_store.dart';
 import 'package:forest_mobile/service/secure_storage.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -16,8 +17,10 @@ import '../app_scaffold.dart';
 
 class OneIDScreen extends StatefulWidget {
   final String url;
+  final String? screenPath;
 
-  const OneIDScreen({Key? key, required this.url}) : super(key: key);
+  const OneIDScreen({Key? key, required this.url, this.screenPath})
+      : super(key: key);
 
   @override
   State<OneIDScreen> createState() => _OneIDScreenState();
@@ -57,7 +60,7 @@ class _OneIDScreenState extends State<OneIDScreen> {
         ),
       )
       ..clearLocalStorage()
-      // ..loadHtmlString(widget.url,baseUrl: widget.url);
+    // ..loadHtmlString(widget.url,baseUrl: widget.url);
       ..loadRequest(Uri.parse(widget.url));
   }
 
@@ -75,8 +78,12 @@ class _OneIDScreenState extends State<OneIDScreen> {
     try {
       var context = MyApp.navigatorKey.currentState?.context;
       String platform = '';
-      bool isAndroid = Theme.of(context!).platform == TargetPlatform.android;
-      bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+      bool isAndroid = Theme
+          .of(context!)
+          .platform == TargetPlatform.android;
+      bool isIOS = Theme
+          .of(context)
+          .platform == TargetPlatform.iOS;
       if (isAndroid) platform = TargetPlatform.android.name;
       if (isIOS) platform = TargetPlatform.iOS.name;
       var deviceToken = await FirebaseMessaging.instance.getToken();
@@ -91,8 +98,9 @@ class _OneIDScreenState extends State<OneIDScreen> {
         openSnackBar(
             message: "One ID login iss successful",
             background: AppColor.mainColor.withOpacity(0.8));
-        var data = OneIdLoginResponse.fromJson(response.data);
+        var data = OneIDLoginResponse.fromJson(response.data);
         log("Token: ${data.accessToken}");
+        HiveSaver.saveOneIDLoginResponse(data);
         await SecureStorage.write(
             key: SecureStorage.token, value: data.accessToken ?? 'Error token');
         await SecureStorage.write(
@@ -100,8 +108,9 @@ class _OneIDScreenState extends State<OneIDScreen> {
             value: data.data?.authType ?? 'Error authType');
         await SecureStorage.write(
             key: SecureStorage.phone, value: data.data?.phone ?? 'Error phone');
-        MyApp.navigatorKey.currentState?.pushReplacement(
-            MaterialPageRoute(builder: (context) => AppScaffold()));
+        ScreenPath.pushToScreen(widget.screenPath ?? ScreenPath.appScaffold);
+        // MyApp.navigatorKey.currentState?.pushReplacement(
+        //     MaterialPageRoute(builder: (context) => AppScaffold()));
       }
     } on DioException catch (error) {
       log("Dio Error one id screen catch: $error");

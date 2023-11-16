@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:forest_mobile/components/app_text.dart';
 import 'package:forest_mobile/constants/colors.dart';
+import 'package:forest_mobile/constants/variables.dart';
 import 'package:forest_mobile/main.dart';
 import 'package:forest_mobile/views/auth/user_exist_screen.dart';
 
@@ -33,7 +34,7 @@ class ProfileScreen extends StatelessWidget {
               title: 'Sign in',
               onPressed: () {
                 MyApp.navigatorKey.currentState?.push(MaterialPageRoute(
-                  builder: (context) => const UserExistScreen(),
+                  builder: (context) => const UserExistScreen(screenPath: ScreenPath.profile),
                 ));
               },
               leading: Icons.login),

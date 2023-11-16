@@ -16,7 +16,9 @@ import '../../main.dart';
 import 'one_id_screen.dart';
 
 class UserExistScreen extends StatefulWidget {
-  const UserExistScreen({super.key});
+  final String screenPath;
+
+  const UserExistScreen({super.key, required this.screenPath});
 
   @override
   State<UserExistScreen> createState() => _UserExistScreenState();
@@ -42,14 +44,16 @@ class _UserExistScreenState extends State<UserExistScreen> {
               MyDialog.closeLoading();
               if (state.success == false) {
                 MyApp.navigatorKey.currentState?.push(MaterialPageRoute(
-                    builder: (context) =>
-                        RegisterScreen(phone: getPhone(phone: state.phone))));
+                    builder: (context) => RegisterScreen(
+                        phone: getPhone(phone: state.phone),
+                        screenPath: widget.screenPath)));
               } else {
                 // openSnackBar(
                 //     message: "${state.phone} is exist",
                 //     background: AppColor.mainColor.withOpacity(0.7));
                 MyApp.navigatorKey.currentState?.push(MaterialPageRoute(
-                    builder: (context) => OtpScreen(phone: state.phone)));
+                    builder: (context) => OtpScreen(
+                        phone: state.phone, screenPath: widget.screenPath)));
               }
             }
           },
@@ -146,8 +150,9 @@ class _UserExistScreenState extends State<UserExistScreen> {
                                       await MyDialog.closeLoading();
                                       MyApp.navigatorKey.currentState
                                           ?.push(MaterialPageRoute(
-                                        builder: (context) =>
-                                            OneIDScreen(url: state.url),
+                                        builder: (context) => OneIDScreen(
+                                            url: state.url,
+                                            screenPath: widget.screenPath),
                                       ));
                                     }
                                   },
